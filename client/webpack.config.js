@@ -16,35 +16,33 @@ module.exports = () => {
       path: path.resolve(__dirname, 'dist'),
     },
       plugins: [
-      // TODO: Add and configure workbox plugins for a service worker and manifest file.
+      // TODO: Add and configure workbox plugins for a service worker and manifest file.- DONE
        new HtmlWebpackPlugin({
       template: './index.html',
       title: 'Text Editor'
        }),
        new InjectManifest({
-      swSrc: './src/sw.js',
-      swDest: 'service-worker.js',
+      swSrc: './src-sw.js',
+      swDest:'src-sw.js',
           }),
+      //manifest.json file
       new WebpackPwaManifest({
+     fingerprints: false,
+     inject: true,
      name: 'Text Editor',
      short_name: 'JATE',
-     description: 'Keep track of contacts!',
+     description: 'Create text!',
      background_color: '#272822',
      theme_color: '#272822',
-    start_url: './',
-    publicPath: './',
-    icons: [
+     start_url: './',
+     publicPath: './',
+     icons: [
     {
       src: path.resolve('src/images/logo.png'),
       sizes: [96, 128, 192, 256, 384, 512],
       destination: path.join('assets', 'icons'),
     },
-    {
-      src: path.resolve('src/images/icon-manifest.png'),
-      size: '1024x1024',
-      destination: path.join('assets', 'icons'),
-      purpose: 'maskable'
-    }
+   
   ],
 })
 
@@ -55,21 +53,20 @@ module.exports = () => {
       // TODO: Add CSS loaders and babel to webpack. DONE
       rules: [
         {
-         test: /\.css$/i,
-        use: ['style-loader', 'css-loader'],
+          test: /\.css$/i,
+          use: ['style-loader', 'css-loader'],
         },
         {
-         test: /\.m?js$/,
-         exclude: /node_modules/,
+          test: /\.m?js$/,
+          exclude: /node_modules/,
           use: {
-          loader: 'babel-loader',
-          options: {
-          presets: [
-          ['@babel/preset-env', { targets: "defaults" }]
-        ]
-      }
-    }
-  }
+            loader: 'babel-loader',
+            options: {
+              presets: ['@babel/preset-env'],
+              plugins: ['@babel/plugin-proposal-object-rest-spread', '@babel/transform-runtime']
+            },
+          },
+        },
       ],
     },
   };
